@@ -1,0 +1,32 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.wechatbridge'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.wechatbridge"
+        minSdk 28         // Android 9，Waydroid 默认 Android 11 满足
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+}
+
+dependencies {
+    // 内嵌 WebSocket Server
+    implementation 'org.java-websocket:Java-WebSocket:1.5.4'
+    implementation 'com.google.code.gson:gson:2.10.1'
+}

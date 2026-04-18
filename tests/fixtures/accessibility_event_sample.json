@@ -1,0 +1,9 @@
+{
+  "type": "message",
+  "chat_id": "filehelper",
+  "chat_name": "文件传输助手",
+  "sender": "",
+  "content": "@Bot 今天天气怎么样？",
+  "ts": 1713340800,
+  "is_group": false
+}

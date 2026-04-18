@@ -1,0 +1,16 @@
+tasks:
+  - name: "每日早报"
+    cron: "0 8 * * 1-5"       # 周一至周五 08:00
+    targets:
+      - type: group
+        name: "团队群"
+    content_template: "morning_news.jinja2"
+    enabled: false             # 先关闭，配置好模板后再开启
+
+  - name: "周报提醒"
+    cron: "0 17 * * 5"        # 周五 17:00
+    targets:
+      - type: group
+        name: "团队群"
+    content: "提醒：今天是周五，请提交周报 📝"
+    enabled: false

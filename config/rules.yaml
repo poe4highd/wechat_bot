@@ -1,0 +1,24 @@
+rules:
+  - name: "echo调试"
+    match:
+      type: keyword
+      keywords: ["#echo"]
+    handler: echo
+    cooldown_seconds: 0
+    # scope: []  # 留空=所有会话
+
+  - name: "帮助菜单"
+    match:
+      type: keyword
+      keywords: ["帮助", "help", "#help"]
+    handler: keyword
+    reply: "可用命令：\n#echo - 回显\n#help - 帮助\n@Bot <问题> - AI 问答"
+    cooldown_seconds: 5
+
+  - name: "AI问答"
+    match:
+      type: regex
+      pattern: "^@Bot (.+)"
+    handler: llm
+    cooldown_seconds: 10
+    # scope: ["AI助手群"]

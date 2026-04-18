@@ -1,0 +1,19 @@
+adb:
+  host: "192.168.240.1"
+  port: 5555
+
+bridge:
+  ws_url: "ws://localhost:8765"
+  reconnect_delay: 2       # 初始重连延迟（秒）
+  max_reconnect_delay: 60
+
+wechat:
+  pkg: "com.tencent.mm"
+  accessibility_service: "com.wechatbridge/.WechatAccessibilityService"
+
+heartbeat:
+  interval: 30             # 心跳检查间隔（秒）
+
+api:
+  host: "127.0.0.1"
+  port: 8000

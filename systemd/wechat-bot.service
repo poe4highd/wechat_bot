@@ -1,0 +1,16 @@
+[Unit]
+Description=WeChat Bot (Waydroid + ADB + Accessibility)
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/projects/wechat_bot
+ExecStartPre=/bin/bash -c 'waydroid session start || true'
+ExecStart=/usr/bin/python3 -m wechat_bot
+ExecStartPost=/bin/bash %h/projects/wechat_bot/scripts/setup_adb_forward.sh
+Restart=on-failure
+RestartSec=10
+Environment=PYTHONPATH=%h/projects/wechat_bot
+
+[Install]
+WantedBy=default.target
