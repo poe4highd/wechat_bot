@@ -1,0 +1,31 @@
+=== Waydroid Setup Guide ===
+
+1. 安装 Waydroid（Ubuntu 22.04）：
+   curl -s https://repo.waydro.id/waydroid.gpg | sudo tee /usr/share/keyrings/waydroid.gpg > /dev/null
+   echo 'deb [signed-by=/usr/share/keyrings/waydroid.gpg] https://repo.waydro.id/ jammy main' | sudo tee /etc/apt/sources.list.d/waydroid.list
+   sudo apt update && sudo apt install waydroid
+
+2. 初始化（选 GAPPS 镜像以获得 Play Store，或选 VANILLA）：
+   sudo waydroid init -s GAPPS
+
+3. 启动 session：
+   waydroid session start
+
+4. 安装微信 APK（ARM64 版本，从官网下载）：
+   adb connect 192.168.240.1:5555
+   adb install -r weixin.apk
+
+5. 手动登录微信（只需一次）。
+
+6. 安装 WechatBridge APK：
+   cd scripts/../apk && ./gradlew assembleDebug
+   adb install -r app/build/outputs/apk/debug/app-debug.apk
+
+7. 启用 Accessibility Service：
+   adb shell settings put secure enabled_accessibility_services com.wechatbridge/.WechatAccessibilityService
+   adb shell settings put secure accessibility_enabled 1
+
+8. 建立 port forward：
+   bash scripts/setup_adb_forward.sh
+
+完成后运行 'make health' 验证所有组件状态。
