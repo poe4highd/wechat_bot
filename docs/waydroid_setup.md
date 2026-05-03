@@ -136,6 +136,54 @@ make health
 
 ---
 
+## 微信登录问题排查
+
+### 背景
+
+项目目标：在 Waydroid (Linux x86_64) 上运行新版微信（个人账号），通过 Accessibility Service 实现 WeChat Bot 加入群聊。
+
+微信对模拟器环境有严格的风控检测，以下方法均已测试。
+
+### 已尝试的方法
+
+| 方法 | 结果 | 原因 |
+|------|------|------|
+| 短信验证码登录 | 收不到验证码 | 微信检测到模拟器，拦截短信下发 |
+| 伪造设备属性（Pixel 6）| 登录转圈超时 | 微信风控不只依赖 `ro.product.*` 属性 |
+| `ro.build.characteristics=nosdcard` | 无效 | 微信 tablet 判断有独立逻辑 |
+| 修改屏幕分辨率为手机比例 | 无效 | 仍显示 "Log in on Tablet Only" |
+| Email + 密码登录（国际版账号）| 转圈超时 | 模拟器环境被风控拦截请求 |
+| ADB backup/restore | 不可行 | 微信设置 `allowBackup=false` |
+
+### 下一步方向
+
+#### 方向 1：真实手机登录后迁移数据（推荐）
+
+成功率最高，对微信版本无限制。
+
+1. 准备一台 root 过的 Android 手机，安装 Magisk + Shamiko 隐藏 root
+2. 在手机上正常登录微信
+3. 通过 ADB 导出登录数据：
+   ```bash
+   adb -s <手机ID> shell "su -c 'tar -czf /sdcard/wechat_data.tar.gz /data/data/com.tencent.mm'"
+   adb -s <手机ID> pull /sdcard/wechat_data.tar.gz
+   ```
+4. 推送到 Waydroid：
+   ```bash
+   adb -s 192.168.240.112:5555 push wechat_data.tar.gz /sdcard/
+   adb -s 192.168.240.112:5555 shell "su -c 'tar -xzf /sdcard/wechat_data.tar.gz -C /'"
+   ```
+
+#### 方向 2：LSPosed + 反检测插件
+
+在 Waydroid 内安装 Magisk → LSPosed → Shamiko，绕过微信模拟器检测。步骤较复杂，Waydroid 对 Magisk 支持不稳定。
+
+#### 方向 3：VirtualXposed
+
+不需要 root，相对简单，但长期未维护，对微信 8.x 兼容性存疑，不推荐。
+
+---
+
 ## 常用命令速查
 
 | 操作 | 命令 |
