@@ -58,8 +58,29 @@ adb devices
 
 - [ ] ADB 已安装：`adb version`
 - [ ] Python 3.10+：`python3 --version`
-- [ ] 项目依赖安装：`pip install -r requirements.txt`（或 `poetry install`）
-- [ ] uiautomator2 安装到手机：`python3 -m uiautomator2 init`
+- [ ] 项目依赖安装（使用 `.venv`）：
+  ```bash
+  python3 -m venv .venv
+  .venv/bin/pip install websockets uiautomator2 adbutils
+  ```
+- [ ] uiautomator2 安装到手机：`.venv/bin/python3 -m uiautomator2 init`
+
+#### Android SDK 路径配置
+
+Android SDK 安装在 `~/android-sdk/`，但系统默认不设置 `$ANDROID_HOME`，导致 Gradle 构建时找不到 SDK。
+
+**临时方式**（每次构建时指定）：
+```bash
+ANDROID_HOME=~/android-sdk ./gradlew assembleDebug
+```
+
+**永久方式**（推荐，加入 `~/.bashrc`）：
+```bash
+export ANDROID_HOME=~/android-sdk
+export PATH=$PATH:$ANDROID_HOME/platform-tools:$ANDROID_HOME/cmdline-tools/latest/bin
+```
+
+加完后执行 `source ~/.bashrc` 生效。
 
 ### 3. WechatBridge APK 构建
 
